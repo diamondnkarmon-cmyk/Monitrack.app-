@@ -3,25 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>MoniTrack - Business Management System</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- Header with Hamburger Menu -->
     <header>
         <div class="logo">
             <img src="logo.png.jpeg" alt="MoniTrack Logo">
         </div>
 
-        <nav>
+        <!-- Hamburger Menu Button -->
+        <div class="menu-toggle" id="mobile-menu" aria-label="Menu" role="button" tabindex="0">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- Navigation -->
+        <nav id="nav-menu">
             <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#printers">Printers</a></li>
-                <li><a href="#plans">Subscription</a></li>
-                <li><a href="#download">Download</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#printers" class="nav-link">Printers</a></li>
+                <li><a href="#plans" class="nav-link">Subscription</a></li>
+                <li><a href="#download" class="nav-link">Download</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -53,7 +61,7 @@
         <div class="printer-container">
 
             <div class="printer-card">
-                <img src="58mm.jpg" alt="58mm Printer" class="printer-img">
+                <img src="58mm.jpg" alt="58mm Thermal Printer for small businesses" class="printer-img" loading="lazy">
                 <h3>58mm Thermal Printer</h3>
                 <p>Ideal for small businesses such as:</p>
                 <ul>
@@ -64,7 +72,7 @@
             </div>
 
             <div class="printer-card">
-                <img src="80mm.jpg" alt="80mm Printer" class="printer-img">
+                <img src="80mm.jpg" alt="80mm Thermal Printer for medium and large businesses" class="printer-img" loading="lazy">
                 <h3>80mm Thermal Printer</h3>
                 <p>Perfect for medium and large businesses like:</p>
                 <ul>
@@ -86,23 +94,23 @@
 
             <div class="plan-card">
                 <h3>Monthly Plan</h3>
-                <p>Flexible monthly payment option.</p>
-                <p><strong>Price: $--</strong></p>
-                <button>Subscribe</button>
+                <p class="plan-description">Flexible monthly payment option.</p>
+                <p class="plan-price"><strong>Price: $--</strong></p>
+                <button class="plan-btn" aria-label="Subscribe to Monthly Plan">Subscribe</button>
             </div>
 
             <div class="plan-card">
                 <h3>Yearly Plan</h3>
-                <p>Save more with annual payment.</p>
-                <p><strong>Price: $--</strong></p>
-                <button>Subscribe</button>
+                <p class="plan-description">Save more with annual payment.</p>
+                <p class="plan-price"><strong>Price: $--</strong></p>
+                <button class="plan-btn" aria-label="Subscribe to Yearly Plan">Subscribe</button>
             </div>
 
             <div class="plan-card premium">
                 <h3>Premium Plan</h3>
-                <p>Advanced features and priority support.</p>
-                <p><strong>Price: $--</strong></p>
-                <button>Subscribe</button>
+                <p class="plan-description">Advanced features and priority support.</p>
+                <p class="plan-price"><strong>Price: $--</strong></p>
+                <button class="plan-btn" aria-label="Subscribe to Premium Plan">Subscribe</button>
             </div>
 
         </div>
@@ -118,9 +126,11 @@
     <!-- Contact -->
     <section id="contact">
         <h2>Contact Us</h2>
-        <p><strong>Phone:</strong> +231-888823971</p>
-        <p><strong>Email:</strong> Monitrack@gmail.com</p>
-        <p><strong>Location:</strong> Monrovia, Liberia</p>
+        <div class="contact-info">
+            <p><strong>Phone:</strong> <a href="tel:+231888823971">+231-888823971</a></p>
+            <p><strong>Email:</strong> <a href="mailto:Monitrack@gmail.com">Monitrack@gmail.com</a></p>
+            <p><strong>Location:</strong> Monrovia, Liberia</p>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -128,5 +138,74 @@
         <p>© 2026 MoniTrack. All Rights Reserved.</p>
     </footer>
 
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // Toggle menu on button click
+        mobileMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            
+            // Update aria-expanded for accessibility
+            const expanded = this.classList.contains('active');
+            this.setAttribute('aria-expanded', expanded);
+        });
+
+        // Close menu when a link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                navMenu.classList.remove('active');
+                mobileMenu.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isClickInside = navMenu.contains(event.target) || mobileMenu.contains(event.target);
+            
+            if (!isClickInside && navMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('active');
+                navMenu.classList.remove('active');
+                mobileMenu.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Prevent menu from staying open on window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('active');
+                navMenu.classList.remove('active');
+                mobileMenu.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add touch-friendly hover effects for mobile
+        if ('ontouchstart' in window) {
+            document.body.classList.add('touch-device');
+        }
+    </script>
+
+    <!-- Optional: Add Font Awesome for icons (optional enhancement) -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
 </body>
 </html>
